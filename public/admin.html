@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Controle - Urna Interativa TikTok</title>
+  <link rel="stylesheet" href="/css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="admin-wrapper">
+    <header class="admin-header">
+      <div class="brand">
+        <h1>🗳️ PAINEL DO STREAMER</h1>
+        <p>Urna Eletrônica Interativa para TikTok Live</p>
+      </div>
+      <div class="status-indicator" id="connection-status-pill">
+        <span class="status-dot disconnected"></span>
+        <span id="connection-text">TikTok Desconectado</span>
+      </div>
+    </header>
+
+    <div class="admin-grid">
+      
+      <!-- SEÇÃO 1: CONEXÃO TIKTOK -->
+      <section class="admin-card">
+        <h2>📡 Conectar à Live do TikTok</h2>
+        <p class="card-desc">Digite o seu @ de usuário do TikTok (a live já deve estar aberta no app ou TikTok Studio).</p>
+        
+        <div class="form-group inline">
+          <input type="text" id="tiktok-user-input" placeholder="ex: @seu_usuario" value="">
+          <button id="btn-connect-tiktok" class="btn btn-primary">Conectar</button>
+          <button id="btn-disconnect-tiktok" class="btn btn-danger" style="display: none;">Desconectar</button>
+        </div>
+        <div style="margin-top: 10px;">
+          <details style="cursor: pointer; font-size: 0.85rem; color: #94a3b8;">
+            <summary>⚙️ Configuração avançada de API (Opcional)</summary>
+            <div style="margin-top: 8px;">
+              <input type="password" id="euler-api-key-input" placeholder="Chave EulerStream API Key (opcional)" style="width: 100%; padding: 8px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #f8fafc; font-size: 0.85rem;">
+              <small style="display: block; color: #64748b; margin-top: 4px;">Não é obrigatório. Deixe em branco para usar a conexão gratuita direta.</small>
+            </div>
+          </details>
+        </div>
+        <div id="tiktok-feedback" class="feedback-msg"></div>
+      </section>
+
+      <!-- SEÇÃO 2: CONTROLE DA RODADA -->
+      <section class="admin-card">
+        <h2>⏱️ Controle da Partida</h2>
+        <div class="controls-row">
+          <div class="form-group">
+            <label>Duração da Rodada (Segundos):</label>
+            <input type="number" id="round-duration-input" value="180" min="30" max="600">
+          </div>
+          <button id="btn-save-timer" class="btn btn-secondary">Atualizar Tempo</button>
+        </div>
+        <div class="btn-group-actions">
+          <button id="btn-toggle-timer" class="btn btn-warning">Pausar / Retomar Timer</button>
+          <button id="btn-restart-round" class="btn btn-danger">Zerar Votos e Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 3: CONFIGURAÇÃO DOS CANDIDATOS -->
+      <section class="admin-card full-width">
+        <h2>👥 Configurar Candidatos</h2>
+        <div class="candidates-config-grid">
+          
+          <!-- CANDIDATO 1 -->
+          <div class="candidate-box-edit">
+            <h3 style="color: #ef4444;">Candidato 1 (Esquerda)</h3>
+            <div class="form-group">
+              <label>Nome:</label>
+              <input type="text" id="c1-name-input" value="LULINHA">
+            </div>
+            <div class="form-group">
+              <label>Número (2 Dígitos):</label>
+              <input type="text" id="c1-number-input" value="13" maxlength="2">
+            </div>
+            <div class="form-group">
+              <label>Partido / Coligação:</label>
+              <input type="text" id="c1-party-input" value="PT">
+            </div>
+            <div class="form-group">
+              <label>Cor do Tema:</label>
+              <input type="color" id="c1-color-input" value="#ef4444">
+            </div>
+            <div class="form-group">
+              <label>URL da Foto:</label>
+              <input type="text" id="c1-photo-input" value="/assets/candidate1.png">
+            </div>
+          </div>
+
+          <!-- CANDIDATO 2 -->
+          <div class="candidate-box-edit">
+            <h3 style="color: #22c55e;">Candidato 2 (Direita)</h3>
+            <div class="form-group">
+              <label>Nome:</label>
+              <input type="text" id="c2-name-input" value="BOLSONARO">
+            </div>
+            <div class="form-group">
+              <label>Número (2 Dígitos):</label>
+              <input type="text" id="c2-number-input" value="22" maxlength="2">
+            </div>
+            <div class="form-group">
+              <label>Partido / Coligação:</label>
+              <input type="text" id="c2-party-input" value="PL">
+            </div>
+            <div class="form-group">
+              <label>Cor do Tema:</label>
+              <input type="color" id="c2-color-input" value="#22c55e">
+            </div>
+            <div class="form-group">
+              <label>URL da Foto:</label>
+              <input type="text" id="c2-photo-input" value="/assets/candidate2.png">
+            </div>
+          </div>
+
+        </div>
+        <button id="btn-save-candidates" class="btn btn-success" style="width: 100%; margin-top: 15px;">Salvar Candidatos</button>
+      </section>
+
+      <!-- SEÇÃO 4: CONVERSÃO DE PRESENTES & ANTI-RESTRIÇÃO TIKTOK -->
+      <section class="admin-card full-width">
+        <h2>🔥 Conversão da Live & Anti-Restrição TikTok</h2>
+        <p class="card-desc">Faça as pessoas mandarem presentes configurando a proporção de comentários vs presentes, e evite punições do TikTok.</p>
+        
+        <div class="candidates-config-grid" style="margin-top: 15px;">
+          <div class="candidate-box-edit">
+            <h3 style="color: #fbbf24;">⚡ Meta de Comentários no Chat</h3>
+            <div class="form-group">
+              <label>Comentários para gerar 1 voto na urna:</label>
+              <input type="number" id="comments-per-vote-input" value="5" min="1" max="50">
+              <small style="color: #94a3b8; display: block; margin-top: 4px;">Dica: Colocar 5 ou 10 faz o chat bombar e incentiva quem quer vencer a mandar presentes!</small>
+            </div>
+            <div class="form-group">
+              <label>Letreiro da Urna (Anti-Restrição TikTok):</label>
+              <input type="text" id="brand-title-input" value="ENQUETE DA LIVE">
+              <small style="color: #4ade80; display: block; margin-top: 4px;">✅ Seguro (evita usar "Justiça Eleitoral" que gera ban de autoridade pública).</small>
+            </div>
+          </div>
+
+          <div class="candidate-box-edit">
+            <h3 style="color: #38bdf8;">🎁 Peso dos Presentes (Conversão)</h3>
+            <div class="form-group">
+              <label>Votos da Rosa Vermelha (Lula 13):</label>
+              <input type="number" id="gift-votes-c1-input" value="50" min="10" max="1000">
+            </div>
+            <div class="form-group">
+              <label>Votos da Rosa Branca / Coração (Bolsonaro 22):</label>
+              <input type="number" id="gift-votes-c2-input" value="50" min="10" max="1000">
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <button id="btn-save-conversion" class="btn btn-primary" style="flex: 2;">Salvar Regras de Conversão</button>
+          <button id="btn-test-sound-c1" class="btn btn-outline-danger" style="flex: 1;">🔊 Testar Som Lula</button>
+          <button id="btn-test-sound-c2" class="btn btn-outline-success" style="flex: 1;">🔊 Testar Som Bolsonaro</button>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 5: SIMULADOR DE TESTES AO VIVO -->
+      <section class="admin-card full-width">
+        <h2>🧪 Simulador de Votos (Teste sem Live)</h2>
+        <p class="card-desc">Clique nos botões abaixo para simular votos no chat ou presentes e verificar o comportamento da urna na tela!</p>
+        
+        <div class="simulator-buttons-grid">
+          <button id="sim-vote-c1" class="btn btn-outline-danger">+1 Comentário (Lula 13)</button>
+          <button id="sim-vote-c2" class="btn btn-outline-success">+1 Comentário (Bolsonaro 22)</button>
+          <button id="sim-gift-c1" class="btn btn-gift-c1">🌹 Rosa Vermelha (+50 Lula)</button>
+          <button id="sim-gift-c2" class="btn btn-gift-c2">🤍 Rosa Branca (+50 Bolsonaro)</button>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 5: GUIA DO TIKTOK LIVE STUDIO -->
+      <section class="admin-card full-width info-card">
+        <h2>🎬 Como adicionar no TikTok LIVE Studio / OBS Studio</h2>
+        <ol>
+          <li>Abra o <b>TikTok LIVE Studio</b> no seu computador.</li>
+          <li>Clique em <b>Adicionar Fonte</b> e selecione <b>Link / Navegador (Browser Source)</b>.</li>
+          <li>Cole a URL: <code class="url-copy">http://localhost:3000</code></li>
+          <li>Defina a resolução recomendada para <b>1080 x 1920</b> (ou ajuste para preencher a tela vertical).</li>
+          <li>Pronto! Você pode controlar tudo por este painel enquanto transmite.</li>
+        </ol>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
